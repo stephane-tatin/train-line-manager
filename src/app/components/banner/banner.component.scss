@@ -1,0 +1,22 @@
+.banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    display: flex;
+    gap: 10px;
+    flex: 11;
+    align-items: center;
+    background-color: red;
+    color: white;
+    font-weight: 600;
+}
+
+.spacer {
+    flex:1
+}
+
+.hello {
+    align-self: flex-end;
+}

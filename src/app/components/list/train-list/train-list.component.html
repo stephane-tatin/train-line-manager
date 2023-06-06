@@ -1,0 +1,34 @@
+<table mat-table [dataSource]="(trainList$ | async) || []" class="mat-elevation-z8">
+  <ng-container matColumnDef="number">
+    <th mat-header-cell *matHeaderCellDef> No. </th>
+    <td mat-cell *matCellDef="let train"> {{train.number}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="departure">
+    <th mat-header-cell *matHeaderCellDef> Departure </th>
+    <td mat-cell *matCellDef="let train"> {{getDisplayDepartureInfos(train)}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="arrival">
+    <th mat-header-cell *matHeaderCellDef> arrival </th>
+    <td mat-cell *matCellDef="let train"> {{getDisplayArrivalInfos(train)}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="Stops">
+    <th mat-header-cell *matHeaderCellDef> Stops </th>
+    <td mat-cell *matCellDef="let train"> {{displayStationStops(train)}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="type">
+    <th mat-header-cell *matHeaderCellDef> type </th>
+    <td mat-cell *matCellDef="let train"> {{train.type}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="editTrain(row)"></tr>
+</table>
+
+<div *ngIf="!((trainList$ | async) || []).length" class="list-spinner">
+  <mat-spinner></mat-spinner>
+</div>
+

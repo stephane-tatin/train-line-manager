@@ -1,0 +1,175 @@
+<div class="edit-form-wrapper" [formGroup]="trainForm">
+  <h1 mat-dialog-title>{{ getModalTitle() }}</h1>
+
+  <div class="row">
+    <div class="column">
+      <mat-form-field appearance="fill">
+        <mat-label>Number</mat-label>
+        <input matInput formControlName="number" />
+        <mat-error *ngIf="trainForm.get('number')?.invalid">{{
+          getErrorMessage(trainForm.get("number")!)
+        }}</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="column">
+      <mat-form-field appearance="fill">
+        <mat-label>Departure</mat-label>
+        <mat-select formControlName="departure">
+          <mat-option *ngFor="let city of cities" [value]="city">
+            {{ city }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="trainForm.get('departure')?.invalid">{{
+          getErrorMessage(trainForm.get("departure")!)
+        }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="column">
+      <mat-form-field appearance="fill">
+        <mat-label>Departure Time</mat-label>
+        <input
+          matInput
+          formControlName="departureDate"
+          [matDatepicker]="pickerDeparture"
+        />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="pickerDeparture"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #pickerDeparture></mat-datepicker>
+        <mat-error *ngIf="trainForm.get('departureDate')?.invalid">{{
+          getErrorMessage(trainForm.get("departureDate")!)
+        }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="column">
+      <mat-form-field appearance="fill">
+        <mat-label>Departure Time </mat-label>
+        <input matInput formControlName="departureTime" />
+        <mat-error *ngIf="trainForm.get('departureTime')?.invalid">{{
+          getErrorMessage(trainForm.get("departureTime")!)
+        }}</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="column">
+      <mat-form-field appearance="fill">
+        <mat-label>Arrival</mat-label>
+        <mat-select formControlName="arrival">
+          <mat-option *ngFor="let city of cities" [value]="city">
+            {{ city }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="trainForm.get('arrival')?.invalid">{{
+          getErrorMessage(trainForm.get("arrival")!)
+        }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="column">
+      <mat-form-field appearance="fill">
+        <mat-label>Arrival Time</mat-label>
+        <input
+          matInput
+          formControlName="arrivalDate"
+          [matDatepicker]="pickerArrival"
+        />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="pickerArrival"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #pickerArrival></mat-datepicker>
+        <mat-error *ngIf="trainForm.get('arrivalDate')?.invalid">{{
+          getErrorMessage(trainForm.get("arrivalDate")!)
+        }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="column">
+      <mat-form-field appearance="fill">
+        <mat-label>Arrival Date</mat-label>
+        <input matInput formControlName="arrivalTime" />
+        <mat-error *ngIf="trainForm.get('arrivalTime')?.invalid">{{
+          getErrorMessage(trainForm.get("arrivalTime")!)
+        }}</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="column">
+      <mat-form-field class="example-chip-list">
+        <mat-label>Stops</mat-label>
+        <mat-chip-grid #chipGrid aria-label="train stops">
+          <mat-chip-row *ngFor="let stop of stops" (removed)="remove(stop)">
+            {{ stop }}
+            <button matChipRemove [attr.aria-label]="'remove ' + stop">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+        </mat-chip-grid>
+        <input
+          placeholder="New stop..."
+          #stopsInput
+          formControlName="stationsStops"
+          [matChipInputFor]="chipGrid"
+          [matAutocomplete]="auto"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="add($event)"
+        />
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="selected($event)"
+        >
+          <mat-option
+            *ngFor="let rideAllowedStop of getRideAllowedStopForStations()"
+            [value]="rideAllowedStop"
+          >
+            {{ rideAllowedStop }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+
+    <div class="column">
+      <mat-form-field appearance="fill">
+        <mat-label>Select</mat-label>
+        <mat-select [(value)]="selectedType" formControlName="type">
+          <mat-option
+            *ngFor="let trainTypeOption of trainTypeOptions"
+            [value]="trainTypeOption"
+            >{{ trainTypeOption }}</mat-option
+          >
+        </mat-select>
+        <mat-error *ngIf="trainForm.get('type')?.invalid">{{
+          getErrorMessage(trainForm.get("type")!)
+        }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="column">
+
+    </div>
+  </div>
+
+  <div mat-dialog-actions class="save-container">
+    <button mat-button (click)="onQuit()">Quit</button>
+    <button
+      mat-button
+      (click)="getDialogResult(trainForm, data?.train?.id)"
+      cdkFocusInitial
+      [disabled]="trainForm.pristine"
+    >
+      Save changes
+    </button>
+  </div>
+</div>
