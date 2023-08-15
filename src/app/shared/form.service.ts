@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Train } from './models/train.model';
 import {
+  FormArray,
   FormControl,
   FormGroup,
   ValidationErrors,
   Validators,
 } from '@angular/forms';
+import { Axe } from './models/axe.model';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +28,7 @@ export class FormService {
       departureDate: new FormControl(train?.departureDate ? new Date(train?.departureDate) : '', [
         Validators.required,
       ]),
-      arrival: new FormControl(train?.arrival || '', Validators.required),
+      arrival: new FormControl({value: train?.arrival || '', disabled: true}, Validators.required),
       arrivalDate: new FormControl(train?.arrivalDate ? new Date(train?.arrivalDate) : '', Validators.required),
       arrivalTime: new FormControl(train?.arrivalTime || '', [
         Validators.required,
@@ -51,4 +53,25 @@ export class FormService {
     }
     return validationErrors;
   }
+
+  buildAxeForm(axe?: Axe) {
+    const axeForm = new FormGroup({
+      name: new FormControl(axe?.name || '', [
+        Validators.required,
+        Validators.pattern('^[FA|RE]{2}[0-9]{3}?$'),
+      ]),
+
+      ...this.getFormControlsCityFields(axe?.cityList || [])
+    });
+
+    return axeForm;
+  }
+
+  getFormControlsCityFields(cityList: string[]) {
+    const formGroupFields: any = {} ;
+    for (const [index, city] of cityList.entries()) {
+        formGroupFields[`city${index}`] = new FormControl(city);
+    }
+    return formGroupFields;
+}
 }

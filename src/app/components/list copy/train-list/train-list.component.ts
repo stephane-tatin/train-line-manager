@@ -55,26 +55,22 @@ export class TrainListComponent {
 
   displayStationStops(train: Train) {
     return train.stationsStops
-      .map((stop) =>
-        this.titleCasePipe.transform(
-          this.cityList.find((city) => city.key === stop)?.name
-        )
-      )
+      .map((stop) => this.titleCasePipe.transform(stop))
       .toString()
       .replace(',', '-');
   }
 
   getDisplayDepartureInfos(train: Train) {
-    return `${this.titleCasePipe.transform(
-      this.cityList.find((city) => city.key === train.departure)?.name
-    )} - ${train.departureDate} - ${train.departureTime}`;
+    return `${this.titleCasePipe.transform(train.departure)} - ${
+      train.departureDate
+    } - ${train.departureTime}`;
   }
 
   getDisplayArrivalInfos(train: Train) {
-    return `${this.titleCasePipe.transform(
-      this.cityList.find((city) => city.key === train.arrival)?.name
-    )} - ${formatDate(train.arrivalDate, 'shortDate', 'en')} - ${
-      train.arrivalTime
-    }`;
+    return `${this.titleCasePipe.transform(train.arrival)} - ${formatDate(
+      train.arrivalDate,
+      'shortDate',
+      'en'
+    )} - ${train.arrivalTime}`;
   }
 }

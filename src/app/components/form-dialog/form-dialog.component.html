@@ -5,7 +5,7 @@
     <div class="column">
       <mat-form-field appearance="fill">
         <mat-label>Number</mat-label>
-        <input matInput formControlName="number" />
+        <input matInput formControlName="number" data-testid="number"/>
         <mat-error *ngIf="trainForm.get('number')?.invalid">{{
           getErrorMessage(trainForm.get("number")!)
         }}</mat-error>
@@ -18,8 +18,8 @@
       <mat-form-field appearance="fill">
         <mat-label>Departure</mat-label>
         <mat-select formControlName="departure">
-          <mat-option *ngFor="let city of cities" [value]="city">
-            {{ city }}
+          <mat-option *ngFor="let city of departureCities" [value]="city">
+            {{ city | titlecase}}
           </mat-option>
         </mat-select>
         <mat-error *ngIf="trainForm.get('departure')?.invalid">{{
@@ -64,8 +64,8 @@
       <mat-form-field appearance="fill">
         <mat-label>Arrival</mat-label>
         <mat-select formControlName="arrival">
-          <mat-option *ngFor="let city of cities" [value]="city">
-            {{ city }}
+          <mat-option *ngFor="let city of arrivalCities" [value]="city">
+            {{ city  | titlecase}}
           </mat-option>
         </mat-select>
         <mat-error *ngIf="trainForm.get('arrival')?.invalid">{{
@@ -107,36 +107,15 @@
 
   <div class="row">
     <div class="column">
-      <mat-form-field class="example-chip-list">
+      <mat-form-field>
         <mat-label>Stops</mat-label>
-        <mat-chip-grid #chipGrid aria-label="train stops">
-          <mat-chip-row *ngFor="let stop of stops" (removed)="remove(stop)">
-            {{ stop }}
-            <button matChipRemove [attr.aria-label]="'remove ' + stop">
-              <mat-icon>cancel</mat-icon>
-            </button>
-          </mat-chip-row>
-        </mat-chip-grid>
-        <input
-          placeholder="New stop..."
-          #stopsInput
-          formControlName="stationsStops"
-          [matChipInputFor]="chipGrid"
-          [matAutocomplete]="auto"
-          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-          (matChipInputTokenEnd)="add($event)"
-        />
-        <mat-autocomplete
-          #auto="matAutocomplete"
-          (optionSelected)="selected($event)"
-        >
+        <mat-select formControlName="stationsStops" multiple>
           <mat-option
             *ngFor="let rideAllowedStop of getRideAllowedStopForStations()"
             [value]="rideAllowedStop"
+            >{{ rideAllowedStop| titlecase }}</mat-option
           >
-            {{ rideAllowedStop }}
-          </mat-option>
-        </mat-autocomplete>
+        </mat-select>
       </mat-form-field>
     </div>
 
@@ -156,9 +135,7 @@
       </mat-form-field>
     </div>
 
-    <div class="column">
-
-    </div>
+    <div class="column"></div>
   </div>
 
   <div mat-dialog-actions class="save-container">

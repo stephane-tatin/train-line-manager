@@ -1,0 +1,28 @@
+<div class="edit-form-wrapper" [formGroup]="axeForm">
+  <h1 mat-dialog-title>{{ getModalTitle() }}</h1>
+
+  <div class="row">
+    <div class="column">
+      <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" />
+        <!-- <mat-error *ngIf="trainForm.get('number')?.invalid">{{
+          getErrorMessage(trainForm.get("number")!)
+        }}</mat-error> -->
+      </mat-form-field>
+    </div>
+  </div>
+
+
+  <!-- <div mat-dialog-actions class="save-container">
+    <button mat-button (click)="onQuit()">Quit</button>
+    <button
+      mat-button
+      (click)="getDialogResult(trainForm, data?.train?.id)"
+      cdkFocusInitial
+      [disabled]="trainForm.pristine"
+    >
+      Save changes
+    </button>
+  </div> -->
+</div>

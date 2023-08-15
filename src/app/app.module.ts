@@ -14,9 +14,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { InMemoryDataService } from 'src/assets/in-memory-data.service';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTableModule } from '@angular/material/table';
-import { EditDialogComponent } from './components/edit-dialog/edit-dialog.component';
+import { FormDialogComponent } from './components/form-dialog/form-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -28,7 +28,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { TitleCasePipe } from '@angular/common';
+import { DestinationListComponent } from './components/destination-list/destination-list.component';
+import { DestinationFormDialogComponent } from './components/destination-form-dialog/destination-form-dialog.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,9 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     HomeComponent,
     ListComponent,
     TrainListComponent,
-    EditDialogComponent,
+    FormDialogComponent,
+    DestinationListComponent,
+    DestinationFormDialogComponent,
   ],
   imports: [
     ReactiveFormsModule,
@@ -50,7 +55,6 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatDividerModule,
     MatTableModule,
     MatDialogModule,
-    MatFormFieldModule,
     MatInputModule,
     MatSidenavModule,
     MatSelectModule,
@@ -60,13 +64,15 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatDatepickerModule,
     MatNativeDateModule,
     MatChipsModule,
+    MatFormFieldModule,
     MatAutocompleteModule,
     MatProgressSpinnerModule,
     HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
       dataEncapsulation: false,
     }),
   ],
-  providers: [],
+  exports: [MatFormFieldModule],
+  providers: [TitleCasePipe],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

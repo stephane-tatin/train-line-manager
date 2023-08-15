@@ -1,0 +1,35 @@
+<div class="app-list-container">
+  <table
+    mat-table
+    [dataSource]="(axeList$ | async) || []"
+    class="mat-elevation-z8"
+  >
+    
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let axe">{{ axe.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="cityList">
+      <th mat-header-cell *matHeaderCellDef>city list</th>
+      <td mat-cell *matCellDef="let axe">
+        {{ axe.cityList }}
+      </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let rdow; columns: displayedColumns;" (click)="editAxe(rdow)"></tr>
+  </table>
+
+  <!-- <div *ngIf="!((trainList$ | async) || []).length" class="list-spinner">
+    <mat-spinner></mat-spinner>
+  </div>-->
+  
+  
+  <div class="add-train-button">
+    <button mat-mini-fab (click)="addAxe()">
+      <mat-icon>location_city</mat-icon>
+    </button>
+  </div> 
+</div>

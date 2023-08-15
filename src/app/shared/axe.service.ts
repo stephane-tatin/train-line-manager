@@ -1,26 +1,31 @@
 import { Injectable } from '@angular/core';
 import { Train } from './models/train.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { LogService } from './log.service';
-import { City } from './models/city.model';
+import { AllowedStops } from './models/allowed-stops.model';
+import { Axe } from './models/axe.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CityService {
-  private citiesUrl = 'api/cities';
+export class AxeService {
+  private axeUrl = 'api/axes';
+  public source = new BehaviorSubject<Axe[]>([]);
+  public readonly axeState$ = this.source.asObservable();
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
   constructor(private http: HttpClient, private logService: LogService) {}
 
-  getCities(): Observable<City[]> {
-    return this.http.get<City[]>(this.citiesUrl).pipe(
-      tap((_) => this.logService.info('fetched cities')),
-      catchError(this.handleError<City[]>('getCities', []))
+  getAxes(): Observable<Axe[]> {
+    return this.http.get<Axe[]>(this.axeUrl).pipe(
+      tap((axes) => {
+        this.source.next(axes);
+        this.logService.info('fetched axes')}),
+      catchError(this.handleError<Axe[]>('getAllowedStops', []))
     );
   }
 
@@ -39,16 +44,16 @@ export class CityService {
   //   );
   // }
 
-  // addTrain(train: Train): Observable<Train> {
-  //   return this.http
-  //     .post<Train>(this.trainsUrl, train, this.httpOptions)
-  //     .pipe(
-  //       tap((train: Train) =>
-  //         this.logService.info(`added train w/ id=${train.id}`)
-  //       ),
-  //       catchError(this.handleError<Train>(`addTrain id=${train.id}`))
-  //     );
-  // }
+  addAxe(axe: Axe): Observable<Axe> {
+    return this.http
+      .post<Axe>(this.axeUrl, axe, this.httpOptions)
+      .pipe(
+        tap((axe: Axe) =>
+          this.logService.info(`added axe w/ id=${axe.id}`)
+        ),
+        catchError(this.handleError<Axe>(`addAxe id=${axe.id}`))
+      );
+  }
 
   // deleteTrain(id: number): Observable<Train> {
   //   const url = `${this.trainsUrl}/${id}`;
@@ -85,9 +90,5 @@ export class CityService {
       // Let the app keep running by returning an empty result.
       return of(result as T);
     };
-  }
-
-  cityKeyToName(key: string) {
-this
   }
 }
